@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Patientforsikring Prisberegner</title>
+</head>
+
+<body>
+    <header>Header Placeholder (from Tryg page)</header>
+    <main></main>
+    <footer>Footer Placeholder (from Tryg page)</footer>
+
+    <script type="text/javascript">
+        // Function to create and insert the form
+        function createInsuranceForm()
+        {
+            // Find insertion point
+            var mainContent = document.querySelector("main") || document.body;
+            var formContainer = document.createElement("div");
+            formContainer.id = "insuranceFormContainer";
+
+            // Create form
+            var form = document.createElement("form");
+            form.id = "insuranceForm";
+
+            // Headline
+            var headline = document.createElement("h2");
+            headline.innerHTML = "Patientforsikring Prisberegner";
+            form.appendChild(headline);
+
+            // Omsetning (Revenue) input
+            var revenueLabel = document.createElement("label");
+            revenueLabel.innerHTML = "Omsetning (DKK): ";
+            var revenueInput = document.createElement("input");
+            revenueInput.type = "number";
+            revenueInput.id = "revenue";
+            revenueInput.required = true;
+            revenueInput.min = "0";
+            revenueLabel.appendChild(revenueInput);
+            form.appendChild(revenueLabel);
+            form.appendChild(document.createElement("br"));
+
+            // Specialty selection
+            var specialtyLabel = document.createElement("label");
+            specialtyLabel.innerHTML = "Speciale: ";
+            form.appendChild(specialtyLabel);
+            form.appendChild(document.createElement("br"));
+
+            var generalOption = document.createElement("input");
+            generalOption.type = "radio";
+            generalOption.name = "specialty";
+            generalOption.value = "0.08";
+            generalOption.id = "generalDentist";
+            var generalLabel = document.createElement("label");
+            generalLabel.innerHTML = "General Tandlæge (8%) ";
+            generalLabel.appendChild(generalOption);
+            form.appendChild(generalLabel);
+
+            var specialistOption = document.createElement("input");
+            specialistOption.type = "radio";
+            specialistOption.name = "specialty";
+            specialistOption.value = "0.10";
+            specialistOption.id = "specialist";
+            var specialistLabel = document.createElement("label");
+            specialistLabel.innerHTML = "Specialist (10%) ";
+            specialistLabel.appendChild(specialistOption);
+            form.appendChild(specialistLabel);
+            form.appendChild(document.createElement("br"));
+
+            // CVR input
+            var cvrLabel = document.createElement("label");
+            cvrLabel.innerHTML = "CVR: ";
+            var cvrInput = document.createElement("input");
+            cvrInput.type = "text";
+            cvrInput.id = "cvr";
+            cvrInput.required = true;
+            cvrInput.maxLength = "8";
+            cvrLabel.appendChild(cvrInput);
+            form.appendChild(cvrLabel);
+            form.appendChild(document.createElement("br"));
+
+            // Personal info section
+            var personalSection = document.createElement("h3");
+            personalSection.innerHTML = "Personlige Oplysninger";
+            form.appendChild(personalSection);
+
+            var firstNameLabel = document.createElement("label");
+            firstNameLabel.innerHTML = "Fornavn: ";
+            var firstNameInput = document.createElement("input");
+            firstNameInput.type = "text";
+            firstNameInput.id = "firstName";
+            firstNameInput.required = true;
+            firstNameLabel.appendChild(firstNameInput);
+            form.appendChild(firstNameLabel);
+            form.appendChild(document.createElement("br"));
+
+            var lastNameLabel = document.createElement("label");
+            lastNameLabel.innerHTML = "Efternavn: ";
+            var lastNameInput = document.createElement("input");
+            lastNameInput.type = "text";
+            lastNameInput.id = "lastName";
+            lastNameInput.required = true;
+            lastNameLabel.appendChild(lastNameInput);
+            form.appendChild(lastNameLabel);
+            form.appendChild(document.createElement("br"));
+
+            var phoneLabel = document.createElement("label");
+            phoneLabel.innerHTML = "Telefon nr.: ";
+            var phoneInput = document.createElement("input");
+            phoneInput.type = "tel";
+            phoneInput.id = "phone";
+            phoneInput.required = true;
+            phoneInput.pattern = "[0-9]{8}";
+            phoneLabel.appendChild(phoneInput);
+            form.appendChild(phoneLabel);
+            form.appendChild(document.createElement("br"));
+
+            var altPhoneLabel = document.createElement("label");
+            altPhoneLabel.innerHTML = "Alternativ telefon nr. (valgfrit): ";
+            var altPhoneInput = document.createElement("input");
+            altPhoneInput.type = "tel";
+            altPhoneInput.id = "altPhone";
+            altPhoneInput.pattern = "[0-9]{8}";
+            altPhoneLabel.appendChild(altPhoneInput);
+            form.appendChild(altPhoneLabel);
+            form.appendChild(document.createElement("br"));
+
+            var emailLabel = document.createElement("label");
+            emailLabel.innerHTML = "Mailadresse: ";
+            var emailInput = document.createElement("input");
+            emailInput.type = "email";
+            emailInput.id = "email";
+            emailInput.required = true;
+            emailLabel.appendChild(emailInput);
+            form.appendChild(emailLabel);
+            form.appendChild(document.createElement("br"));
+
+            // Bank details section
+            var bankSection = document.createElement("h3");
+            bankSection.innerHTML = "Bankoplysninger";
+            form.appendChild(bankSection);
+
+            var bankLabel = document.createElement("label");
+            bankLabel.innerHTML = "Reg. nr. Kontonummer: ";
+            var bankInput = document.createElement("input");
+            bankInput.type = "text";
+            bankInput.id = "bankDetails";
+            bankInput.required = true;
+            bankInput.maxLength = "14";
+            bankLabel.appendChild(bankInput);
+            form.appendChild(bankLabel);
+            form.appendChild(document.createElement("br"));
+
+            // Consent checkbox
+            var consentLabel = document.createElement("label");
+            var consentInput = document.createElement("input");
+            consentInput.type = "checkbox";
+            consentInput.id = "consent";
+            consentInput.required = true;
+            consentLabel.appendChild(consentInput);
+            consentLabel.innerHTML += " Jeg bekrafter, at jeg har givet de korrekte oplysninger og er indforstået med vilkårene";
+            form.appendChild(consentLabel);
+            form.appendChild(document.createElement("br"));
+
+            // Info text
+            var infoText = document.createElement("p");
+            infoText.innerHTML = "Vores rådgiver kontakter dig: Efter din bestilling vil du hurtigst muligt blive kontaktet af en af vores medarbejdere. Så kan vi aftale, hvornår du ønsker, at din forsikring skal starte. Prisen gælder i 30 dage fra din bestilling.";
+            form.appendChild(infoText);
+
+            // Price display
+            var priceDisplay = document.createElement("p");
+            priceDisplay.id = "priceDisplay";
+            priceDisplay.innerHTML = "Pris: 0 kr./md.";
+            form.appendChild(priceDisplay);
+
+            // Contact info
+            var contactInfo = document.createElement("p");
+            contactInfo.innerHTML = "Kontakt Trygs rådgivere for spørgsmål på 78743401";
+            form.appendChild(contactInfo);
+
+            // Submit button
+            var submitButton = document.createElement("button");
+            submitButton.type = "button";
+            submitButton.innerHTML = "Indsend";
+            submitButton.onclick = submitForm;
+            form.appendChild(submitButton);
+
+            // Error message
+            var errorMessage = document.createElement("p");
+            errorMessage.id = "errorMessage";
+            form.appendChild(errorMessage);
+
+            // Apply CSS via JS
+            formContainer.style.maxWidth = "600px";
+            formContainer.style.margin = "20px auto";
+            formContainer.style.padding = "20px";
+            formContainer.style.backgroundColor = "#f9f9f9";
+            formContainer.style.borderRadius = "8px";
+            formContainer.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+
+            form.style.display = "flex";
+            form.style.flexDirection = "column";
+            form.style.gap = "15px";
+
+            headline.style.color = "#2c3e50";
+            personalSection.style.color = "#2c3e50";
+            bankSection.style.color = "#2c3e50";
+
+            revenueLabel.style.fontWeight = "bold";
+            revenueInput.style.width = "200px";
+            revenueInput.style.padding = "8px";
+            revenueInput.style.border = "1px solid #ccc";
+            revenueInput.style.borderRadius = "4px";
+
+            specialtyLabel.style.fontWeight = "bold";
+            generalLabel.style.marginRight = "20px";
+            specialistLabel.style.marginRight = "20px";
+
+            cvrLabel.style.fontWeight = "bold";
+            cvrInput.style.width = "200px";
+            cvrInput.style.padding = "8px";
+            cvrInput.style.border = "1px solid #ccc";
+            cvrInput.style.borderRadius = "4px";
+
+            firstNameLabel.style.fontWeight = "bold";
+            firstNameInput.style.width = "200px";
+            firstNameInput.style.padding = "8px";
+            firstNameInput.style.border = "1px solid #ccc";
+            firstNameInput.style.borderRadius = "4px";
+
+            lastNameLabel.style.fontWeight = "bold";
+            lastNameInput.style.width = "200px";
+            lastNameInput.style.padding = "8px";
+            lastNameInput.style.border = "1px solid #ccc";
+            lastNameInput.style.borderRadius = "4px";
+
+            phoneLabel.style.fontWeight = "bold";
+            phoneInput.style.width = "200px";
+            phoneInput.style.padding = "8px";
+            phoneInput.style.border = "1px solid #ccc";
+            phoneInput.style.borderRadius = "4px";
+
+            altPhoneLabel.style.fontWeight = "bold";
+            altPhoneInput.style.width = "200px";
+            altPhoneInput.style.padding = "8px";
+            altPhoneInput.style.border = "1px solid #ccc";
+            altPhoneInput.style.borderRadius = "4px";
+
+            emailLabel.style.fontWeight = "bold";
+            emailInput.style.width = "200px";
+            emailInput.style.padding = "8px";
+            emailInput.style.border = "1px solid #ccc";
+            emailInput.style.borderRadius = "4px";
+
+            bankLabel.style.fontWeight = "bold";
+            bankInput.style.width = "200px";
+            bankInput.style.padding = "8px";
+            bankInput.style.border = "1px solid #ccc";
+            bankInput.style.borderRadius = "4px";
+
+            consentLabel.style.fontSize = "14px";
+            infoText.style.fontSize = "14px";
+            infoText.style.color = "#555";
+            contactInfo.style.fontSize = "14px";
+            contactInfo.style.color = "#555";
+
+            priceDisplay.style.fontSize = "18px";
+            priceDisplay.style.fontWeight = "bold";
+            priceDisplay.style.color = "#2c3e50";
+
+            submitButton.style.padding = "10px 20px";
+            submitButton.style.backgroundColor = "#FF0000"; // Updated to red
+            submitButton.style.color = "white";
+            submitButton.style.border = "none";
+            submitButton.style.borderRadius = "4px";
+            submitButton.style.cursor = "pointer";
+            submitButton.style.alignSelf = "flex-start";
+
+            errorMessage.style.color = "red";
+            errorMessage.style.fontSize = "14px";
+
+            // Add form to container and page
+            formContainer.appendChild(form);
+            mainContent.insertBefore(formContainer, mainContent.lastElementChild);
+
+            // Event listeners
+            revenueInput.oninput = updatePrice;
+            generalOption.onchange = updatePrice;
+            specialistOption.onchange = updatePrice;
+        }
+
+        // Price calculation
+        function updatePrice()
+        {
+            var revenue = parseFloat(document.getElementById("revenue").value) || 0;
+            var specialty = document.querySelector("input[name='specialty']:checked");
+            var factor = specialty ? parseFloat(specialty.value) : 0;
+            var price = revenue * factor;
+            document.getElementById("priceDisplay").innerHTML = "Pris: " + price.toFixed(2) + " kr./md.";
+            triggerEvent("contentShift", { field: "specialty", price: price });
+        }
+
+        // Form submission
+        function submitForm()
+        {
+            var revenue = document.getElementById("revenue").value;
+            var specialty = document.querySelector("input[name='specialty']:checked");
+            var cvr = document.getElementById("cvr").value;
+            var firstName = document.getElementById("firstName").value;
+            var lastName = document.getElementById("lastName").value;
+            var phone = document.getElementById("phone").value;
+            var altPhone = document.getElementById("altPhone").value;
+            var email = document.getElementById("email").value;
+            var bankDetails = document.getElementById("bankDetails").value;
+            var consent = document.getElementById("consent").checked;
+
+            var errorMessage = document.getElementById("errorMessage");
+            if (!revenue || !specialty || !cvr || !firstName || !lastName || !phone || !email || !bankDetails || !consent)
+            {
+                errorMessage.innerHTML = "Udfyld venligst alle påkrævede felter!";
+                triggerEvent("error", { message: "Missing required fields" });
+                return;
+            }
+
+            if (cvr.length !== 8 || isNaN(cvr))
+            {
+                errorMessage.innerHTML = "CVR skal være et 8-cifret nummer!";
+                triggerEvent("error", { message: "Invalid CVR" });
+                return;
+            }
+            if (phone.length !== 8 || isNaN(phone))
+            {
+                errorMessage.innerHTML = "Telefon nr. skal være et 8-cifret nummer!";
+                triggerEvent("error", { message: "Invalid phone number" });
+                return;
+            }
+
+            var formData = {
+                revenue: revenue,
+                specialty: specialty.value === "0.08" ? "General Tandlæge" : "Specialist",
+                cvr: cvr,
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                altPhone: altPhone,
+                email: email,
+                bankDetails: bankDetails,
+                consent: consent
+            };
+
+            triggerEvent("submit", formData);
+            errorMessage.innerHTML = "Formular indsendt! Du vil modtage en velkomstmail og blive kontaktet af en rådgiver.";
+            errorMessage.style.color = "green";
+            document.getElementById("insuranceForm").reset();
+            document.getElementById("priceDisplay").innerHTML = "Pris: 0 kr./md.";
+        }
+
+        // Event trigger function (placeholder)
+        function triggerEvent(eventType, data)
+        {
+            console.log("Event: " + eventType, data); // Replace with your actual function call
+        }
+
+        // Run when page loads
+        window.onload = createInsuranceForm;
+    </script>
+</body>
+
+</html>
